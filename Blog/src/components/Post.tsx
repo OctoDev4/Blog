@@ -19,14 +19,20 @@ interface Content{
     content:string
 }
 
-interface PostProps{
+ export interface PostType{
+    id:number
     author:Author;
     publishAt:Date;
     content:Content[]
 
 }
+
+interface PostProps{
+    post:Post
+
+}
 // Declaração do componente Post, que recebe as propriedades author, publishAt e content
-export function Post({ author, publishAt, content }:PostProps) {
+export function Post({ post}:PostProps) {
 
     const [comments,setComments] = useState([
        "post bacana"
@@ -35,12 +41,12 @@ export function Post({ author, publishAt, content }:PostProps) {
    const isNewCommentEmpty = newCommentText.length === 0 ;
 
     // Formata a data de publicação para o formato especificado, usando o local pt-BR
-    const publishedDate = format(publishAt, "d 'de 'LLLL 'às' HH:mm'h'", {
+    const publishedDate = format(post.publishAt, "d 'de 'LLLL 'às' HH:mm'h'", {
         locale: ptBR
     });
 
     // Calcula a distância relativa da data de publicação até o momento atual, usando o local pt-BR
-    const publishedDateRelativeToNow = formatDistanceToNow(publishAt, {
+    const publishedDateRelativeToNow = formatDistanceToNow(post.publishAt, {
         locale: ptBR,
         addSuffix: true
     });
@@ -79,19 +85,19 @@ export function Post({ author, publishAt, content }:PostProps) {
         <article className={styles.post}>
             <header>
                 <div className={styles.author}>
-                    <Avatar src={author.avatarUrl} />  {/* Renderiza o Avatar do autor */}
+                    <Avatar src={post.author.avatarUrl} />  {/* Renderiza o Avatar do autor */}
                     <div className={styles.authorInfo}>
-                        <strong>{author.name}</strong>  {/* Renderiza o nome do autor */}
-                        <span>{author.role}</span>  {/* Renderiza a função/papel do autor */}
+                        <strong>{post.author.name}</strong>  {/* Renderiza o nome do autor */}
+                        <span>{post.author.role}</span>  {/* Renderiza a função/papel do autor */}
                     </div>
                 </div>
-                <time title={publishedDate} dateTime={publishAt.toISOString()}>
+                <time title={publishedDate} dateTime={post.publishAt.toISOString()}>
                     {publishedDateRelativeToNow}  {/* Renderiza a data de publicação relativa ao momento atual */}
                 </time>
             </header>
             <div className={styles.content}>
                 {/* Mapeia e renderiza o conteúdo do post */}
-                {content.map(line => {
+                {post.content.map(line => {
                     if (line.type === "paragraph") {
                         return (
                             <p key={line.content}>{line.content}</p>  
