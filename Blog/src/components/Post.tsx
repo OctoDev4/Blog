@@ -28,7 +28,7 @@ interface Content{
 }
 
 interface PostProps{
-    post:Post
+    post:PostType
 
 }
 // Declaração do componente Post, que recebe as propriedades author, publishAt e content
